@@ -3,32 +3,16 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-
-// import ToggleColorMode from "./ToggleColorMode";
-import { Logout } from "@mui/icons-material";
-// import ToggleColorMode from "./ToggleTheme";
-// import { ThemeContext } from "../../../theme/ThemeProvider";
 import {
   Avatar,
   // Container,
-  Divider,
   IconButton,
-  ListItemIcon,
   Menu,
-  MenuItem,
-  // Stack,
   Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import HeaderMenu from "./Menu";
-// import AuthService from "../../../service/AuthService";
-
-const logoStyle = {
-  height: "40px",
-  cursor: "pointer",
-};
 
 const Header: React.FC = () => {
   // const [open, setOpen] = React.useState(false);
@@ -111,7 +95,7 @@ const Header: React.FC = () => {
               >
                 {/* <img src={""} style={logoStyle} alt="logo of sitemark" /> */}
                 <Typography variant="h3" sx={{ color: "#40A578" }}>
-                  Đại Lộc ❤ Bảo Ân
+                  Đại Lộc ❤ <span style={{ color: "#E75480" }}>Bảo Ân</span>
                 </Typography>
               </Box>
             </Link>
