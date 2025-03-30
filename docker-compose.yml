@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 25032025
+      POSTGRES_DB: rokkudesu_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Backend Project 1
+  rokkudesu-backend:
+    build: ./rokkudesu-backend
+    ports:
+      - "3001:3000"
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=25032025
+      - DATABASE_NAME=rokkudesu_db
+    depends_on:
+      - postgres
+
+  # Frontend Project 1
+  rokkudesu-frontend:
+    build: ./rokkudesu-frontend
+    ports:
+      - "8081:80"
+
+  # Backend Project 2
+  tranbaoan-backend:
+    build: ./tranbaoan-backend
+    ports:
+      - "3002:3000"
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=25032025
+      - DATABASE_NAME=tranbaoan_db
+    depends_on:
+      - postgres
+
+  # Frontend Project 2
+  tranbaoan-frontend:
+    build: ./tranbaoan-frontend
+    ports:
+      - "8082:80"
+
+  # Nginx Reverse Proxy + SSL
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs
+    depends_on:
+      - rokkudesu-frontend
+      - rokkudesu-backend
+      - tranbaoan-frontend
+      - tranbaoan-backend
+
+volumes:
+  postgres_data:
