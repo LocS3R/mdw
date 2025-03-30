@@ -11,7 +11,7 @@ const MainLayout: React.FC = () => {
       sx={{
         // flex: 1,
         width: "100%",
-        height: "100%",
+        // height: "100%",
         // backgroundImage: `url(${imageUrl})`,
         // backgroundSize: "cover", // Đảm bảo ảnh nền phủ toàn bộ khu vực mà không bị méo
         // backgroundPosition: "center", // Căn giữa ảnh nền
@@ -22,7 +22,7 @@ const MainLayout: React.FC = () => {
             theme.palette.mode === "dark"
               ? theme.colors.alpha.trueWhite[5]
               : theme.colors.alpha.white[50],
-          marginBottom: `${theme.spacing(4)}`,
+          // marginBottom: `${theme.spacing(4)}`,
           boxShadow:
             theme.palette.mode === "dark"
               ? `0 1px 0 ${alpha(

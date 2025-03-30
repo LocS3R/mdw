@@ -86,7 +86,7 @@ function HeaderMenu() {
             classes={{ root: "MuiListItem-indicators" }}
             button
             component={NavLink}
-            to="/home/manager-rbac"
+            to="/"
           >
             <ListItemText
               sx={(theme) => ({
@@ -128,18 +128,10 @@ function HeaderMenu() {
 
           <Menu anchorEl={ref.current} onClose={handleClose} open={isOpen}>
             <>
-              <MenuItem
-                sx={{ px: 3 }}
-                component={NavLink}
-                to="/home/pm-eim-project"
-              >
+              <MenuItem sx={{ px: 3 }} component={NavLink} to="/">
                 Lịch trình của anh
               </MenuItem>
-              <MenuItem
-                sx={{ px: 3 }}
-                component={NavLink}
-                to="/home/pm-mcm-project"
-              >
+              <MenuItem sx={{ px: 3 }} component={NavLink} to="/">
                 Lịch trình của bé
               </MenuItem>
             </>

@@ -18,6 +18,7 @@ import {
   MenuItem,
   // Stack,
   Tooltip,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -108,16 +109,16 @@ const Header: React.FC = () => {
                   cursor: "pointer",
                 }}
               >
-                <img src={""} style={logoStyle} alt="logo of sitemark" />
-                {/* <Typography variant="h4" sx={{ color: "#40A578" }}>
-                  SYSTEM SUSTAINABILITY VIETNAM{" "}
-                </Typography> */}
+                {/* <img src={""} style={logoStyle} alt="logo of sitemark" /> */}
+                <Typography variant="h3" sx={{ color: "#40A578" }}>
+                  Đại Lộc ❤ Bảo Ân
+                </Typography>
               </Box>
             </Link>
 
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            {/* <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <HeaderMenu />
-            </Box>
+            </Box> */}
           </Box>
           <Box
             sx={{
@@ -214,7 +215,7 @@ const Header: React.FC = () => {
                 </MenuItem>
               </Link> */}
               {/* <Divider /> */}
-              <Link
+              {/* <Link
                 to={`/profile/`}
                 style={{ textDecoration: "none", color: "white" }}
               >
@@ -222,8 +223,8 @@ const Header: React.FC = () => {
                   <Avatar /> Profile
                 </MenuItem>
               </Link>
-              <Divider />
-              <MenuItem
+              <Divider /> */}
+              {/* <MenuItem
                 onClick={handleLogout}
                 sx={{
                   color:
@@ -245,7 +246,7 @@ const Header: React.FC = () => {
                   />
                 </ListItemIcon>
                 Logout
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </Box>
           {/* <Box sx={{ display: { sm: "", md: "none" } }}>
