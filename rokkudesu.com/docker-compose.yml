@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: rokkudesu_frontend
+    restart: unless-stopped
+    networks:
+      - rokkudesu_network
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rokkudesu_backend
+    restart: unless-stopped
+    networks:
+      - rokkudesu_network
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:25032025@db:5432/rokkudesu_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: rokkudesu_db
+    restart: unless-stopped
+    networks:
+      - rokkudesu_network
+    volumes:
+      - rokkudesu_db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=25032025
+      - POSTGRES_DB=rokkudesu_db
+      - POSTGRES_USER=postgres
+
+networks:
+  rokkudesu_network:
+    driver: bridge
+
+volumes:
+  rokkudesu_db_data:
