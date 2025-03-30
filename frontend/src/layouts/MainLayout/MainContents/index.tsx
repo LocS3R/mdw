@@ -417,7 +417,7 @@ const MainContents: React.FC = () => {
                     </Typography>
                     <Typography variant="body1" sx={{ fontSize: "1.1rem" }}>
                       <strong>Sở thích:</strong> Nghe nhạc Hoàng Dũng, Giuỗi chữ
-                      trên MXH (tiktok, locket)
+                      trên MXH (tiktok, locket), Cầu lông
                     </Typography>
                   </Box>
                 </Grid>
