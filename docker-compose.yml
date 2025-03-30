@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:80"
+    networks:
+      - tba_network
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgres://postgres:25032025@database:5432/tba_db
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - tba_network
+
+  database:
+    image: postgres:15
+    container_name: tba_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 25032025
+      POSTGRES_DB: tba_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - tba_network
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - tba_network
+volumes:
+  db_data:
+
+networks:
+  tba_network:
