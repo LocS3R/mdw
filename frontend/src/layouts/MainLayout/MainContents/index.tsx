@@ -314,10 +314,10 @@ const MainContents: React.FC = () => {
                   component="div"
                   sx={{
                     position: "absolute",
-                    top: "35%",
+                    top: "45%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    color: "white",
+                    color: "#E75480",
                     fontWeight: "bold",
                     textAlign: "center",
                     lineHeight: 1,
