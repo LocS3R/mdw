@@ -53,13 +53,13 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
     command: >
-      sh -c 
-      "trap exit TERM; 
-      while :; do 
-        certbot renew --webroot -w /var/www/certbot 
-        --post-hook 'docker exec nginx nginx -s reload' 
-        && sleep 6h; 
-      done"
+      sh -c "
+        trap exit TERM;
+        while :; do
+          certbot renew --webroot -w /var/www/certbot --post-hook 'docker exec nginx nginx -s reload';
+          sleep 6h;
+        done
+      "
     depends_on:
       - nginx
 volumes:
