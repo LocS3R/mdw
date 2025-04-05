@@ -3,8 +3,6 @@ services:
   frontend:
     build:
       context: ./frontend
-    ports:
-      - "8080:80"
     networks:
       - tba_network
 
@@ -31,6 +29,7 @@ services:
       - db_data:/var/lib/postgresql/data
     networks:
       - tba_network
+
   nginx:
     image: nginx:alpine
     volumes:
@@ -44,6 +43,16 @@ services:
       - backend
     networks:
       - tba_network
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    networks:
+      - tba_network
+
 volumes:
   db_data:
 
