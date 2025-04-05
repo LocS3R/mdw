@@ -33,11 +33,9 @@ services:
       - tba_network
   nginx:
     image: nginx:alpine
-    container_name: nginx
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./certbot/www:/var/www/certbot:ro  # Thêm dòng này
     ports:
       - "80:80"
       - "443:443"
@@ -46,20 +44,6 @@ services:
       - backend
     networks:
       - tba_network
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./certbot/www:/var/www/certbot:rw
-      - /etc/letsencrypt:/etc/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: >
-      sh -c "
-        echo '0 3 * * * certbot renew --webroot -w /var/www/certbot
-        --post-hook \"docker exec nginx nginx -s reload\"' > /etc/crontabs/root;
-        crond -f
-      "
-    depends_on:
-      - nginx
 volumes:
   db_data:
 
