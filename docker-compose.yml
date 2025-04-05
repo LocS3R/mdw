@@ -44,14 +44,14 @@ services:
       - tba_network
 
   certbot:
-    image: certbot/certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-web:/var/www/certbot
-      - ./nginx/static:/var/www/html:ro
-    depends_on:
-      - nginx
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/html --quiet && sleep 12h & wait $${!}; done'"
+      image: certbot/certbot
+      volumes:
+        - certbot-etc:/etc/letsencrypt
+        - ./nginx/static:/var/www/html:rw  # Thay đổi từ ro sang rw
+      depends_on:
+        - nginx
+      entrypoint: ""
+      command: "sh -c 'sleep 6 && certbot renew --webroot -w /var/www/html --dry-run && certbot renew --webroot -w /var/www/html'"
 volumes:
   db_data:
   certbot-etc:
