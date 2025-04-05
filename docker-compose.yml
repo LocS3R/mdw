@@ -29,6 +29,8 @@ services:
       POSTGRES_DB: tba_db
     volumes:
       - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     networks:
       - tba_network
   nginx:
