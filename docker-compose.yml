@@ -51,8 +51,7 @@ services:
       - ./nginx/static:/var/www/html:ro
     depends_on:
       - nginx
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 12h & wait $${!}; certbot renew --webroot -w /var/www/certbot --quiet && docker exec nginx nginx -s reload; done'"
-
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/html --quiet && sleep 12h & wait $${!}; done'"
 volumes:
   db_data:
   certbot-etc:
