@@ -17,11 +17,11 @@ services:
       dockerfile: Dockerfile
     env_file:
       - ./backend/.env.production
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=25032025
-      - POSTGRES_DB=tba_db
-      # - JWT_SECRET=${JWT_SECRET}
+    # environment:
+    #   - POSTGRES_USER=postgres
+    #   - POSTGRES_PASSWORD=25032025
+    #   - POSTGRES_DB=tba_db
+    #   # - JWT_SECRET=${JWT_SECRET}
     ports:
       - "3000:3000"
     depends_on:
