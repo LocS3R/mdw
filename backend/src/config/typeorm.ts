@@ -14,9 +14,7 @@ type DatabaseConfig = DataSourceOptions & {
   migrations: string[];
   autoLoadEntities?: boolean;
   synchronize?: boolean;
-  ssl?: {
-    rejectUnauthorized: boolean;
-  };
+  ssl?: boolean;
   logging?: boolean | string[];
 };
 
@@ -35,10 +33,7 @@ export const typeormConfigFactory = (
   autoLoadEntities: true,
   synchronize: configService.get<string>('NODE_ENV') !== 'production',
   logging: configService.get<string>('NODE_ENV') === 'development',
-  ssl:
-    configService.get<string>('NODE_ENV') === 'production'
-      ? { rejectUnauthorized: false }
-      : undefined,
+  ssl: false,
 });
 
 // Đăng ký cấu hình dưới dạng namespace 'typeorm'
