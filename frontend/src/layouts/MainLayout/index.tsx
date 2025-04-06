@@ -42,6 +42,7 @@ const MainLayout: React.FC = () => {
       <Header />
 
       <MainContents />
+
       {/* <LeftBarControl /> */}
       <Box
         sx={{

@@ -8,5 +8,7 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+    // const configService = new ConfigService();
+    // return `Hello World! ${configService.get('TEXT')}`;
   }
 }
