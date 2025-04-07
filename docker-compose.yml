@@ -23,10 +23,10 @@ services:
     ports:
       - "3000:3000"  # Host:3000 -> Container:3000 (NestJS app)
     volumes:
-    - ./uploads:/app/uploads  # Add this line to persist uploads
+      - ./uploads:/app/uploads  # Persist uploads
     depends_on:
       database:
-        condition: service_healthy  # Đợi database sẵn sàng
+        condition: service_healthy
     networks:
       - tba_network
     restart: unless-stopped
@@ -35,13 +35,13 @@ services:
     image: postgres:15
     container_name: tba_db
     env_file:
-      - ./.env.db  # File chứa POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+      - ./.env.db
     volumes:
-      - db_data:/var/lib/postgresql/data  # Dữ liệu bền vững
+      - db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"  # Để debug local nếu cần, có thể bỏ trong production
+      - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]  # Kiểm tra database sẵn sàng
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -52,12 +52,13 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro  # Certbot certificates (read-only)
-      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf  # Cấu hình Nginx
-      - /var/lib/letsencrypt/challenges:/challenges:rw  # ACME challenges cho HTTPS
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /var/lib/letsencrypt/challenges:/challenges:rw
+      - ./uploads:/uploads:ro  # Added: Give Nginx direct access to uploads
     ports:
-      - "80:80"   # HTTP
-      - "443:443" # HTTPS
+      - "80:80"
+      - "443:443"
     depends_on:
       - frontend
       - backend
@@ -65,11 +66,9 @@ services:
       - tba_network
     restart: unless-stopped
 
-# Định nghĩa volumes
 volumes:
   db_data:
 
-# Định nghĩa network
 networks:
   tba_network:
     driver: bridge
