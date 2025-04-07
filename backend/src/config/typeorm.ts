@@ -42,7 +42,8 @@ export const typeormConfigFactory = (
   // console.log('Entities path:', entitiesPath);
   migrations: [path.join(__dirname, '..', '/database/migrations/*.{ts,js}')],
   autoLoadEntities: true,
-  synchronize: configService.get<string>('NODE_ENV') !== 'production',
+  // synchronize: configService.get<string>('NODE_ENV') !== 'production',
+  synchronize: false,
   logging: configService.get<string>('NODE_ENV') === 'development',
   ssl: false,
 });
