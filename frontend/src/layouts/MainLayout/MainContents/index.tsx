@@ -25,7 +25,7 @@ const MainContents: React.FC = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // Định nghĩa ngày bắt đầu yêu nhau
-  const startDate = new Date("2025-03-25");
+  const startDate = new Date("2025-03-25T01:26:00");
   const [daysCount, setDaysCount] = useState(0);
   const [beating, setBeating] = useState(true);
   const [hours, setHours] = useState(0);

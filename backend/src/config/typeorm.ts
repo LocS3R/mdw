@@ -2,6 +2,7 @@ import { registerAs } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { config as dotenvConfig } from 'dotenv';
 import { ConfigService } from '@nestjs/config';
+import { globSync } from 'glob';
 import * as path from 'path';
 
 // Load environment variables BEFORE using ConfigService
@@ -35,13 +36,38 @@ export const typeormConfigFactory = (
   username: configService.get<string>('DB_USERNAME', 'postgres'),
   password: configService.get<string>('DB_PASSWORD', ''),
   database: configService.get<string>('DB_DATABASE', 'postgres'),
-  entities: [path.join(__dirname, '..', '/database/**/*.entity.{ts,js}')],
+  entities: [
+    path.resolve(__dirname, '../database/entities/**/*.entity.{ts,js}'),
+  ],
+  // console.log('Entities path:', entitiesPath);
   migrations: [path.join(__dirname, '..', '/database/migrations/*.{ts,js}')],
   autoLoadEntities: true,
   synchronize: configService.get<string>('NODE_ENV') !== 'production',
   logging: configService.get<string>('NODE_ENV') === 'development',
   ssl: false,
 });
+const entitiesPath = path.resolve(
+  __dirname,
+  '../database/entities/**/*.entity.{ts,js}',
+);
+const migrationsPath = path.join(
+  __dirname,
+  '..',
+  '/database/migrations/*.{ts,js}',
+);
+
+console.log('Entities path:', entitiesPath);
+console.log('Migrations path:', migrationsPath);
+
+try {
+  const entityFiles = globSync(entitiesPath);
+  const migrationFiles = globSync(migrationsPath);
+
+  console.log('Entity files found:', entityFiles);
+  console.log('Migration files found:', migrationFiles);
+} catch (err) {
+  console.error('Error reading files with globSync:', err);
+}
 
 // Default config to register with NestJS ConfigModule
 export default registerAs<DatabaseConfig>(

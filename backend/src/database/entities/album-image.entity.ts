@@ -15,7 +15,7 @@ export class AlbumImage {
   @Column({ type: 'varchar', length: 255 })
   filename: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 256 })
   originalName: string;
 
   @Column({ type: 'varchar', length: 255 })
