@@ -19,11 +19,12 @@ export class AlbumService {
     file: Express.Multer.File,
     createAlbumImageDto: CreateAlbumImageDto,
   ): Promise<AlbumImage> {
-    const maxOrderImg = await this.albumImageRepository.findOne({
+    const maxOrderImgs = await this.albumImageRepository.find({
       order: { order: 'DESC' },
+      take: 1, // Retrieve only the top result
     });
 
-    const newOrder = maxOrderImg ? maxOrderImg.order + 1 : 0;
+    const newOrder = maxOrderImgs.length > 0 ? maxOrderImgs[0].order + 1 : 0;
 
     const albumImage = this.albumImageRepository.create({
       filename: file.filename,
