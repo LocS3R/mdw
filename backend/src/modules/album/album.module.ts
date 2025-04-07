@@ -27,7 +27,7 @@ import { AlbumImage } from 'src/database/entities/album-image.entity';
         callback(null, true);
       },
       limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB max file size
+        fileSize: 25 * 1024 * 1024, // 5MB max file size
       },
     }),
   ],

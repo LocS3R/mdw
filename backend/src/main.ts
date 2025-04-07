@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { join } from 'path';
 import { existsSync } from 'fs';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { json, urlencoded } from 'express';
 
 async function bootstrap() {
   try {
@@ -25,6 +26,8 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     const configService = app.get(ConfigService);
 
+    app.use(json({ limit: '25mb' })); // Giới hạn body JSON
+    app.use(urlencoded({ extended: true, limit: '25mb' })); // Giới hạn dữ liệu form-urlencoded
     // Log cấu hình database để debug
     console.log('Database config:', {
       host: configService.get<string>('DB_HOST'),
