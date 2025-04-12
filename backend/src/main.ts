@@ -36,7 +36,19 @@ async function bootstrap() {
     });
 
     const frontendUrl = configService.get<string>('FRONTEND_URL');
-    app.enableCors({ origin: frontendUrl });
+    const allowedOrigins = [
+      frontendUrl, // ví dụ: https://yourdomain.com
+      'http://localhost:3001', // chỉ cho phép local
+    ];
+    app.enableCors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+    });
 
     // Serve static files from 'uploads' directory
     app.useStaticAssets(join(__dirname, '..', 'uploads'), {

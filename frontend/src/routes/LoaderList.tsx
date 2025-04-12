@@ -12,3 +12,4 @@ const Loader =
       </Suspense>
     );
 export const HomePage = Loader(lazy(() => import("../layouts/MainLayout")));
+export const AlbumPage = Loader(lazy(() => import("../pages/AlbumPage/")));

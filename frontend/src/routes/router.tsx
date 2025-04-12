@@ -1,7 +1,7 @@
 // import React from "react";
 import { RouteObject } from "react-router-dom";
 import BaseLayout from "../layouts/BaseLayout";
-import { HomePage } from "./LoaderList";
+import { AlbumPage, HomePage } from "./LoaderList";
 // import { RouteObject } from "react-router-dom";
 // import BaseLayout from "../layouts/BaseLayout";
 
@@ -19,6 +19,15 @@ const router: RouteObject[] = [
         element: (
           // <ProtectedRoute>
           <HomePage />
+          // </ProtectedRoute>
+          // <Navigate to={"home"} />
+        ),
+      },
+      {
+        path: "memories",
+        element: (
+          // <ProtectedRoute>
+          <AlbumPage />
           // </ProtectedRoute>
           // <Navigate to={"home"} />
         ),

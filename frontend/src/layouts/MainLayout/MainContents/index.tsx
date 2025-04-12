@@ -44,7 +44,7 @@ const MainContents: React.FC = () => {
       id: 2,
       src: img2Url || "/api/placeholder/600/400",
       alt: "Kỷ niệm lần hẹn hò",
-      caption: "Ưu điểm thích đi là, Nhược điểm hay đi làm muộn",
+      caption: "Ưu điểm thích đi làm, Nhược điểm hay đi làm muộn",
     },
     {
       id: 3,
