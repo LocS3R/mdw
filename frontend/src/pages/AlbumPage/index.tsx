@@ -133,7 +133,7 @@ const AlbumPage: React.FC = () => {
     formData.append("order", nextOrder.toString());
 
     try {
-      await axios.post(`${API_URL}/api/album`, formData, {
+      await axios.post(`/api/album`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -170,7 +170,7 @@ const AlbumPage: React.FC = () => {
     if (!selectedImage) return;
 
     try {
-      await axios.delete(`${API_URL}/api/album/${selectedImage.id}`);
+      await axios.delete(`/api/album/${selectedImage.id}`);
 
       setNotification({
         open: true,
@@ -195,7 +195,7 @@ const AlbumPage: React.FC = () => {
     if (!selectedImage) return;
 
     try {
-      await axios.patch(`${API_URL}/api/album/${selectedImage.id}`, {
+      await axios.patch(`/api/album/${selectedImage.id}`, {
         caption: newCaption,
       });
 
