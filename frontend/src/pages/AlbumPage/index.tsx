@@ -34,6 +34,7 @@ import {
   PhotoLibrary as PhotoLibraryIcon,
   CloudUpload as CloudUploadIcon,
   Favorite as HeartIcon,
+  Home as HomeIcon,
 } from "@mui/icons-material";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import axios from "axios";
@@ -74,12 +75,12 @@ const AlbumPage: React.FC = () => {
     message: "",
     severity: "success" as "success" | "error",
   });
-  const API_URL = "https://tranbaoan.space/api";
+  // const API_URL = "https://tranbaoan.space/api";
   // Function to fetch all images
   const fetchImages = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_URL}/album`);
+      const response = await axios.get(`/album`);
       // Sort by order
       const sortedImages = response.data.sort(
         (a: AlbumImage, b: AlbumImage) => a.order - b.order
@@ -132,7 +133,7 @@ const AlbumPage: React.FC = () => {
     formData.append("order", nextOrder.toString());
 
     try {
-      await axios.post("/api/album", formData, {
+      await axios.post(`/api/album`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -239,7 +240,7 @@ const AlbumPage: React.FC = () => {
     }));
 
     try {
-      await axios.patch(`${API_URL}/album/reorder`, imageOrders);
+      await axios.patch(`/album/reorder`, imageOrders);
     } catch (error) {
       console.error("Error reordering images:", error);
       setNotification({
@@ -999,6 +1000,32 @@ const AlbumPage: React.FC = () => {
           {notification.message}
         </Alert>
       </Snackbar>
+      <Button
+        variant="contained"
+        size="large"
+        startIcon={<HomeIcon />}
+        onClick={() => (window.location.href = "/")}
+        sx={{
+          background: "linear-gradient(45deg, #E75480, #FF8E53)",
+          borderRadius: "12px",
+          px: 3,
+          py: 1.5,
+          fontWeight: "bold",
+          position: "fixed",
+          bottom: 30,
+          right: 30,
+          zIndex: 1000,
+          boxShadow: "0 4px 15px rgba(231, 84, 128, 0.3)",
+          "&:hover": {
+            background: "linear-gradient(45deg, #FF8E53, #E75480)",
+            boxShadow: "0 6px 20px rgba(231, 84, 128, 0.5)",
+            transform: "translateY(-2px)",
+          },
+          transition: "all 0.3s ease",
+        }}
+      >
+        Home
+      </Button>
     </Box>
   );
 };
