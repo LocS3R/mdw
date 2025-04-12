@@ -400,7 +400,7 @@ const Header: React.FC = () => {
 
           <ListItemButton
             component={Link}
-            to="/album"
+            to="/memories"
             onClick={toggleMobileMenu}
             sx={{
               borderRadius: "10px",
