@@ -38,6 +38,7 @@ async function bootstrap() {
     const frontendUrl = configService.get<string>('FRONTEND_URL');
     const allowedOrigins = [
       frontendUrl, // ví dụ: https://yourdomain.com
+      'http://localhost:3000', // chỉ cho phép local
       'http://localhost:3001', // chỉ cho phép local
     ];
     app.enableCors({

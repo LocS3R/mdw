@@ -74,7 +74,7 @@ const AlbumPage: React.FC = () => {
     message: "",
     severity: "success" as "success" | "error",
   });
-  const API_URL = "http://localhost:3000/api";
+  const API_URL = "https://tranbaoan.space/api";
   // Function to fetch all images
   const fetchImages = useCallback(async () => {
     setLoading(true);
