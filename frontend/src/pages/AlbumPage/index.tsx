@@ -436,14 +436,25 @@ const AlbumPage: React.FC = () => {
             </Box>
           ) : (
             // Grid of images with drag and drop functionality
+            // Thay thế phần DragDropContext hiện tại với phiên bản nâng cấp này
+
+            // Grid of images with enhanced visual display
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="album-images" direction="horizontal">
                 {(provided) => (
-                  <Grid
-                    container
-                    spacing={3}
+                  <Box
                     {...provided.droppableProps}
                     ref={provided.innerRef}
+                    sx={{
+                      display: "grid",
+                      gridTemplateColumns: {
+                        xs: "1fr",
+                        sm: "repeat(2, 1fr)",
+                        md: "repeat(3, 1fr)",
+                      },
+                      gap: 3,
+                      position: "relative",
+                    }}
                   >
                     {images.map((image, index) => (
                       <Draggable
@@ -452,30 +463,50 @@ const AlbumPage: React.FC = () => {
                         index={index}
                       >
                         {(provided, snapshot) => (
-                          <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
+                          <Box
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
+                            sx={{
+                              transform: snapshot.isDragging
+                                ? "scale(1.02)"
+                                : "none",
+                              transition:
+                                "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+                              height: "100%",
+                            }}
                             style={{
                               ...provided.draggableProps.style,
-                              opacity: snapshot.isDragging ? 0.7 : 1,
+                              opacity: snapshot.isDragging ? 0.8 : 1,
                             }}
                           >
                             <Card
                               sx={{
                                 height: "100%",
-                                borderRadius: "12px",
+                                borderRadius: "16px",
                                 overflow: "hidden",
-                                boxShadow: 3,
+                                boxShadow: snapshot.isDragging
+                                  ? "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)"
+                                  : "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
                                 position: "relative",
-                                transition: "all 0.3s ease",
+                                transition:
+                                  "all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)",
+                                transform: "perspective(1000px) rotateY(0deg)",
                                 "&:hover": {
-                                  transform: "translateY(-5px)",
-                                  boxShadow: 6,
+                                  transform:
+                                    "perspective(1000px) rotateY(5deg) translateY(-8px)",
+                                  boxShadow:
+                                    "0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)",
+                                  "& .image-hover-zoom": {
+                                    transform: "scale(1.1)",
+                                  },
+                                  "& .card-overlay": {
+                                    opacity: 1,
+                                  },
+                                  "& .card-caption": {
+                                    background: "rgba(0, 0, 0, 0.75)",
+                                    color: "#fff",
+                                  },
                                 },
                               }}
                             >
@@ -486,84 +517,165 @@ const AlbumPage: React.FC = () => {
                                 }}
                                 sx={{
                                   cursor: "pointer",
-                                  height: getImageHeight(),
                                   position: "relative",
                                   overflow: "hidden",
-                                  "&:hover": {
-                                    "& .hover-overlay": {
-                                      opacity: 1,
-                                    },
+                                  height: {
+                                    xs: 300, // Taller on mobile for better visibility
+                                    sm: 260,
+                                    md: getImageHeight(),
                                   },
                                 }}
                               >
-                                <CardMedia
-                                  component="img"
-                                  height={getImageHeight()}
-                                  image={image.path}
-                                  alt={image.caption || "Memory photo"}
+                                {/* Add a subtle border effect */}
+                                <Box
                                   sx={{
-                                    objectFit: "cover",
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    border: "8px solid rgba(255,255,255,0.2)",
+                                    zIndex: 2,
+                                    borderRadius: "12px",
+                                    pointerEvents: "none",
                                   }}
                                 />
 
-                                {/* Hover overlay with heart icon */}
+                                {/* Image with hover zoom effect */}
+                                <CardMedia
+                                  component="img"
+                                  height="100%"
+                                  image={image.path}
+                                  alt={image.caption || "Memory photo"}
+                                  className="image-hover-zoom"
+                                  sx={{
+                                    objectFit: "cover",
+                                    transition: "transform 0.5s",
+                                    width: "100%",
+                                    height: "100%",
+                                  }}
+                                />
+
+                                {/* Beautiful overlay with heart animation */}
                                 <Box
-                                  className="hover-overlay"
+                                  className="card-overlay"
                                   sx={{
                                     position: "absolute",
                                     top: 0,
                                     left: 0,
                                     width: "100%",
                                     height: "100%",
-                                    background: "rgba(0,0,0,0.3)",
+                                    backgroundImage:
+                                      "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     opacity: 0,
                                     transition: "opacity 0.3s ease",
+                                    zIndex: 1,
                                   }}
                                 >
-                                  <HeartIcon
+                                  <Box
                                     sx={{
-                                      fontSize: 60,
-                                      color: "#fff",
-                                      opacity: 0.8,
-                                      filter:
-                                        "drop-shadow(0 2px 5px rgba(0,0,0,0.3))",
+                                      animation: "pulse 1.5s infinite",
+                                      "@keyframes pulse": {
+                                        "0%": {
+                                          transform: "scale(0.95)",
+                                          opacity: 0.7,
+                                        },
+                                        "70%": {
+                                          transform: "scale(1.1)",
+                                          opacity: 1,
+                                        },
+                                        "100%": {
+                                          transform: "scale(0.95)",
+                                          opacity: 0.7,
+                                        },
+                                      },
                                     }}
-                                  />
+                                  >
+                                    <HeartIcon
+                                      sx={{
+                                        fontSize: 60,
+                                        color: "#fff",
+                                        filter:
+                                          "drop-shadow(0 2px 5px rgba(0,0,0,0.3))",
+                                      }}
+                                    />
+                                  </Box>
+                                </Box>
+
+                                {/* Info ribbon at the bottom */}
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    width: "100%",
+                                    zIndex: 2,
+                                  }}
+                                >
+                                  <Box
+                                    className="card-caption"
+                                    sx={{
+                                      background: "rgba(255,255,255,0.85)",
+                                      backdropFilter: "blur(10px)",
+                                      p: 2,
+                                      transition: "all 0.3s ease",
+                                    }}
+                                  >
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        fontWeight: "medium",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        display: "-webkit-box",
+                                        WebkitLineClamp: 2,
+                                        WebkitBoxOrient: "vertical",
+                                        mb: 0.5,
+                                      }}
+                                    >
+                                      {image.caption || "Khoảnh khắc đáng nhớ"}
+                                    </Typography>
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <Typography
+                                        variant="caption"
+                                        sx={{ opacity: 0.8 }}
+                                      >
+                                        {formatDate(image.createdAt)}
+                                      </Typography>
+                                      <Typography
+                                        variant="caption"
+                                        sx={{
+                                          display: "inline-block",
+                                          px: 1,
+                                          py: 0.25,
+                                          borderRadius: "4px",
+                                          bgcolor: "rgba(231, 84, 128, 0.1)",
+                                          color: "#E75480",
+                                          fontSize: "0.7rem",
+                                        }}
+                                      >
+                                        #{index + 1}
+                                      </Typography>
+                                    </Box>
+                                  </Box>
                                 </Box>
                               </Box>
 
-                              <CardContent>
-                                <Typography
-                                  variant="body1"
-                                  component="div"
-                                  gutterBottom
-                                  sx={{
-                                    fontWeight: "medium",
-                                    minHeight: "48px",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    display: "-webkit-box",
-                                    WebkitLineClamp: 2,
-                                    WebkitBoxOrient: "vertical",
-                                  }}
-                                >
-                                  {image.caption || "Khoảnh khắc đáng nhớ"}
-                                </Typography>
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
-                                >
-                                  {formatDate(image.createdAt)}
-                                </Typography>
-                              </CardContent>
-
+                              {/* Action buttons with improved styling */}
                               <CardActions
                                 sx={{
+                                  p: 1,
                                   justifyContent: "space-between",
-                                  pt: 0,
+                                  bgcolor: "#f9f9f9",
                                 }}
                               >
                                 <Tooltip title="Xem chi tiết">
@@ -573,6 +685,14 @@ const AlbumPage: React.FC = () => {
                                     onClick={() => {
                                       setViewImage(image);
                                       setViewDialogOpen(true);
+                                    }}
+                                    sx={{
+                                      bgcolor: "rgba(63, 81, 181, 0.1)",
+                                      "&:hover": {
+                                        bgcolor: "rgba(63, 81, 181, 0.2)",
+                                        transform: "translateY(-2px)",
+                                      },
+                                      transition: "all 0.2s",
                                     }}
                                   >
                                     <PhotoLibraryIcon />
@@ -589,6 +709,15 @@ const AlbumPage: React.FC = () => {
                                         setNewCaption(image.caption);
                                         setEditDialogOpen(true);
                                       }}
+                                      sx={{
+                                        mr: 1,
+                                        bgcolor: "rgba(63, 81, 181, 0.1)",
+                                        "&:hover": {
+                                          bgcolor: "rgba(63, 81, 181, 0.2)",
+                                          transform: "translateY(-2px)",
+                                        },
+                                        transition: "all 0.2s",
+                                      }}
                                     >
                                       <EditIcon />
                                     </IconButton>
@@ -602,6 +731,14 @@ const AlbumPage: React.FC = () => {
                                         setSelectedImage(image);
                                         setDeleteDialogOpen(true);
                                       }}
+                                      sx={{
+                                        bgcolor: "rgba(211, 47, 47, 0.1)",
+                                        "&:hover": {
+                                          bgcolor: "rgba(211, 47, 47, 0.2)",
+                                          transform: "translateY(-2px)",
+                                        },
+                                        transition: "all 0.2s",
+                                      }}
                                     >
                                       <DeleteIcon />
                                     </IconButton>
@@ -609,12 +746,12 @@ const AlbumPage: React.FC = () => {
                                 </Box>
                               </CardActions>
                             </Card>
-                          </Grid>
+                          </Box>
                         )}
                       </Draggable>
                     ))}
                     {provided.placeholder}
-                  </Grid>
+                  </Box>
                 )}
               </Droppable>
             </DragDropContext>
