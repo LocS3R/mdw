@@ -75,12 +75,12 @@ const AlbumPage: React.FC = () => {
     message: "",
     severity: "success" as "success" | "error",
   });
-  // const API_URL = "https://tranbaoan.space/api";
+  const API_URL = "https://tranbaoan.space/api";
   // Function to fetch all images
   const fetchImages = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/album`);
+      const response = await axios.get(`${API_URL}/album`);
       // Sort by order
       const sortedImages = response.data.sort(
         (a: AlbumImage, b: AlbumImage) => a.order - b.order
@@ -133,7 +133,7 @@ const AlbumPage: React.FC = () => {
     formData.append("order", nextOrder.toString());
 
     try {
-      await axios.post(`/api/album`, formData, {
+      await axios.post(`${API_URL}/api/album`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -170,7 +170,7 @@ const AlbumPage: React.FC = () => {
     if (!selectedImage) return;
 
     try {
-      await axios.delete(`/api/album/${selectedImage.id}`);
+      await axios.delete(`${API_URL}/api/album/${selectedImage.id}`);
 
       setNotification({
         open: true,
@@ -195,7 +195,7 @@ const AlbumPage: React.FC = () => {
     if (!selectedImage) return;
 
     try {
-      await axios.patch(`/api/album/${selectedImage.id}`, {
+      await axios.patch(`${API_URL}/api/album/${selectedImage.id}`, {
         caption: newCaption,
       });
 
@@ -240,7 +240,7 @@ const AlbumPage: React.FC = () => {
     }));
 
     try {
-      await axios.patch(`/album/reorder`, imageOrders);
+      await axios.patch(`${API_URL}/album/reorder`, imageOrders);
     } catch (error) {
       console.error("Error reordering images:", error);
       setNotification({
